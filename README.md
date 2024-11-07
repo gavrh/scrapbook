@@ -18,6 +18,4 @@ Feel free to fork, contribute, and submit issues or pull requests!
 
 > [!CAUTION]
 >
-> This tool is not affiliated with or endorsed by Supercell. The use of this tool is against Supercell's Terms of Service, and any consequences arising from its use are solely the responsibility of the user. The author of this project is not liable for any actions or penalties incurred by the use of this tool.
-> 
-> <a href="https://supercell.com/terms-of-service">supercell.com/terms-of-service</a>
+> This tool is not affiliated with or endorsed by Supercell. The use of this tool is against <a href="https://supercell.com/terms-of-service">__Supercell's Terms of Service__</a>, and any consequences arising from its use are solely the responsibility of the user. The author of this project is not liable for any actions or penalties incurred by the use of this tool.
