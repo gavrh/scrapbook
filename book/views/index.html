@@ -2,10 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title></title>
+        <title>index</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width", initial-scale=1>
-        <link href="css/style.css" rel="stylesheet">
+        <link href="css/default.css" rel="stylesheet">
         <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", (event) => {
@@ -19,45 +19,9 @@
         </script>
     </head>
     <body>
-        {{ template "form" .Form }}
-        <hr />
-        {{ template "display" .Data }}
+        <h1>
+            index
+        </h1>
     </body>
 </html>
-{{ end }}
-
-{{ block "form" . }}
-<form hx- hx-swap="outerHTML" hx-post="/contacts" hx-replace-url="true">
-    name: <input
-        {{ if .Values.name }} value="{{ .Values.name }}" {{ end }}
-        type="text" name="name" />
-    email: <input
-        {{ if .Values.email }} value="{{ .Values.email }}" {{ end }}
-        type="text" name="email" />
-    {{ if .Errors.email }}
-    <div style="color: red;">{{ .Errors.email }}</div>
-    {{ end }}
-    <button type="submit" >Sumbit</button>
-</form> 
-{{ end }}
-
-{{ block "display" . }}
-<div id="contacts" style="display: flex; flex-direction: column;">
-    {{ range .Contacts }}
-    {{ template "contact" . }}
-    {{ end }}
-</div>
-{{ end }}
-
-{{ block "contact" . }}
-<div>
-    Name: <span>{{ .Name }}</span>
-    Email: <span>{{ .Email }}</span>
-</div>
-{{ end }}
-
-{{ block "oob-contact" . }}
-<div id="contacts" hx-swap-oob="afterbegin" >
-    {{ template "contact" . }}
-</div>
 {{ end }}

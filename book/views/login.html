@@ -1,0 +1,57 @@
+{{ block "login" . }}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width", initial-scale=1>
+        <link href="css/default.css" rel="stylesheet">
+        <link href="css/login.css" rel="stylesheet">
+        <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", (event) => {
+
+                window.history.pushState({}, '', {{ template "login_data" . }})
+
+                document.body.addEventListener('htmx:beforeSwap', function(evt) {
+                    if (evt.detail.xhr.status == 422) {
+                        evt.detail.shouldSwap = true;
+                        evt.detail.isError = false;
+                    }
+                })
+            })
+        </script>
+    </head>
+    <body id="body">
+        <div class="login-form-container">
+            <form class="login-form">
+                <div class="login-form-items">
+                    <h1 style="color: #303030; margin-right: auto; margin-left: auto; margin-top: -2px; margin-bottom: 10px;">Scrapbook</h1>
+                    <hr style="margin-top: -4px; margin-bottom: 8px;"/>
+                    <div class="login-form-item">
+                        <h3>Username</h3>
+                        <input type="username" name="username" placeholder="joeshmoe"/>
+                    </div>
+                    <div class="login-form-item">
+                        <h3>Password</h3>
+                        <input type="password" name="password" placeholder="password123"/>
+                    </div>
+                    <button style="text-transform: uppercase;" class="login-form-submit" type="submit">{{ template "login_data" . }}</button>
+                    <a 
+                        hx-target="#body"
+                        hx-get="{{ .OtherLoginType }}"
+                        hx-replace-url="true"
+                        href=""
+                        style="font-size: 14px; margin-right: auto; margin-left: auto; margin-top: 10px; margin-bottom: -10px">
+                        Don't have an account?
+                    </a>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
+{{ end }}
+
+{{ block "login_data" . }}
+    {{ .LoginType }}
+{{ end }}

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"net/http"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -23,64 +24,9 @@ func newTemplate() *Templates {
     }
 }
 
-type Contact struct {
-    Name string
-    Email string
-}
-
-func newContact(name string, email string) Contact {
-    return Contact {
-        Name: name,
-        Email: email,
-    }
-}
-
-type Contacts = []Contact
-
-type Data struct {
-    Contacts Contacts
-}
-
-func (d *Data) hasEmail(email string) bool {
-    for _, contact := range d.Contacts {
-        if contact.Email == email {
-            return true
-        }
-    }
-    return false
-}
-
-func newData() Data {
-    return Data {
-        Contacts: []Contact {
-            newContact("Gavin", "hey@gav.codes"),
-            newContact("Prime", "prime@gmail.com"),
-        },
-    }
-}
-
-type FormData struct {
-    Values map[string]string
-    Errors map[string]string
-}
-
-func newFormData() FormData {
-    return FormData {
-        Values: make(map[string]string),
-        Errors: make(map[string]string),
-    }
-}
-
-type Page struct {
-    Data Data
-    Form FormData
-}
-
-func newPage() Page {
-    return Page {
-        Data: newData(),
-        Form: newFormData(),
-    }
+type LoginData struct {
+    LoginType string
+    OtherLoginType string
 }
 
 func main() {
@@ -88,37 +34,36 @@ func main() {
     e := echo.New()
     e.Use(middleware.Logger())
     e.Static("/css", "css")
-
-    page := newPage()
     e.Renderer = newTemplate()
 
     e.GET("/", func(c echo.Context) error {
-        fmt.Println(c.RealIP(), "\n")
-        return c.Render(200, "index", page)
-    })
 
-    e.POST("/contacts", func(c echo.Context) error {
-        
-
-        name := c.FormValue("name")
-        email := c.FormValue("email")
-
-        if page.Data.hasEmail(email) {
-            formData := newFormData()
-            formData.Values["name"] = name
-            formData.Values["email"] = email
-
-            formData.Errors["email"] = "Email already exists"
-
-            c.Response().Header().Add("Hx-Redirect", "/404")
-            return c.Render(422, "form", formData)
+        // look for token cookie
+        cookies := c.Cookies()
+        var token string
+        for _, cookie := range cookies {
+            if cookie.Name == "token" {
+                token = cookie.Value
+                break
+            }
         }
 
-        contact := newContact(name, email);
-        page.Data.Contacts = append(page.Data.Contacts, contact)
+        fmt.Println(token)
 
-        c.Render(200, "form", newFormData())
-        return c.Render(200, "oob-contact", contact)
+        if len(token) != 0 {
+            return c.Render(http.StatusOK, "index", nil)
+        }
+
+        fmt.Println("Should redirect")
+
+        return c.Render(http.StatusOK, "login", LoginData{ LoginType: "login", OtherLoginType: "signup" })
+    })
+
+    e.GET("/login", func(c echo.Context) error {
+        return c.Render(http.StatusOK, "login", LoginData{ LoginType: "login", OtherLoginType: "signup" })
+    })
+    e.GET("/signup", func(c echo.Context) error {
+        return c.Render(http.StatusOK, "login", LoginData{ LoginType: "signup", OtherLoginType: "login" })
     })
 
     e.Logger.Fatal(e.Start(":420"))
