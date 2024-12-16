@@ -5,11 +5,18 @@ import (
 
     "fmt"
     "net/http"
+    "context"
+    "os"
 
     "github.com/labstack/echo/v4"
+    "github.com/jackc/pgx/v5"
 )
 
-func HandleRequests(e *echo.Echo) {
+type IndexData struct {
+    Id string
+}
+
+func HandleRequests(e *echo.Echo, conn *pgx.Conn) {
     e.GET("/", func(c echo.Context) error {
 
         // look for token cookie
@@ -22,13 +29,20 @@ func HandleRequests(e *echo.Echo) {
             }
         }
 
-        fmt.Println(token)
-
         if len(token) != 0 {
-            return c.Render(http.StatusOK, templates.Index, nil)
-        }
 
-        fmt.Println("Should redirect")
+            var account_id string
+            err := conn.QueryRow(context.Background(), "select account_id from accounts").Scan(&account_id)
+            if err != nil {
+                fmt.Println(err)
+                os.Exit(1)
+            }
+
+            fmt.Println(account_id)
+            fmt.Println("test")
+
+            return c.Render(http.StatusOK, templates.Index, IndexData{ Id: account_id })
+        }
 
         data := templates.NewLoginTemplate(true, "", "", "")
         return c.Render(http.StatusOK, templates.Login, data)

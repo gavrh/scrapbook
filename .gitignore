@@ -5,3 +5,9 @@ main
 
 # cdn
 storage
+
+# env
+.env
+
+# testing
+test
