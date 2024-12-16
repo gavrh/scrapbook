@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>login</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width", initial-scale=1>
         <link href="static/css/default.css" rel="stylesheet">
@@ -11,7 +10,8 @@
         <script>
             document.addEventListener("DOMContentLoaded", (event) => {
 
-                window.history.pushState({}, '', {{ if .IsLogin }} "login" {{ end }})
+                // for redirect from "/"
+                window.history.replaceState({}, "", {{ if .IsLogin }} "login" {{ end }})
 
                 document.body.addEventListener('htmx:beforeSwap', function(evt) {
                     if (evt.detail.xhr.status == 422) {
@@ -28,15 +28,10 @@
 </html>
 {{ end }}
 
-{{ block "testing" . }}
-{{ if .IsLogin }}
-<h1>login</h1>
-{{ else }}
-<h1>signup</h1>
-{{ end }}
-{{ end }}
-
 {{ block "login-form" . }}
+<script>
+document.title = {{ if .IsLogin }} "Login" {{ else }} "Signup" {{ end }}
+</script>
 <div class="login-form-container">
     <form id="login-form" class="login-form">
         <div class="login-form-items">
@@ -67,7 +62,7 @@
                 hx-swap="outerHTML"
                 hx-target=".login-form-container"
                 hx-put="{{ if .IsLogin }}signup{{ else }}login{{ end }}"
-                hx-replace-url="true"
+                hx-push-url="true"
                 href=""
                 style="font-size: 14px; margin-right: auto; margin-left: auto; margin-top: 10px; margin-bottom: -10px">
                 {{ if .IsLogin }}

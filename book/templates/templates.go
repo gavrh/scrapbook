@@ -19,3 +19,12 @@ func NewTemplate() *Templates {
         templates: template.Must(template.ParseGlob("views/*.html")),
     }
 }
+
+const (
+    Index = "index"
+
+    Login = "login"
+    LoginForm = "login-form"
+    Signup = "login"
+    SignupForm = "login-form"
+)

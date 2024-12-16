@@ -49,3 +49,6 @@
     margin-right: auto;
     margin-left: auto;
 }
+.login-form-submit:hover {
+    cursor: pointer;
+}
