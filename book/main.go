@@ -1,8 +1,10 @@
 package main
 
 import (
-    "gavrh/book/handlers"
-    "gavrh/book/templates"
+	"gavrh/book/handlers"
+	"gavrh/book/templates"
+
+	// "io"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -15,6 +17,7 @@ func main() {
     e.Static("/static/css", "css")
     e.Renderer = templates.NewTemplate()
     handlers.HandleRequests(e)
-    e.Logger.Fatal(e.Start(":420"))
+    // e.Logger.SetOutput(io.Discard) | disables logger
+    e.Start(":420")
 
 }
