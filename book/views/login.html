@@ -10,8 +10,8 @@
         <script>
             document.addEventListener("DOMContentLoaded", (event) => {
 
-                // for redirect from "/"
-                window.history.replaceState({}, "", {{ if .IsLogin }} "login" {{ end }})
+                // for redirect because of no auth token
+                {{ if .IsLogin }} window.history.replaceState({}, "", "login") {{ end }}
 
                 document.body.addEventListener('htmx:beforeSwap', function(evt) {
                     if (evt.detail.xhr.status == 422) {
@@ -37,20 +37,24 @@ document.title = {{ if .IsLogin }} "Login" {{ else }} "Signup" {{ end }}
         <div class="login-form-items">
             <h1 style="color: #303030; margin-right: auto; margin-left: auto; margin-top: -2px; margin-bottom: 10px;">Scrapbook</h1>
             <hr style="margin-top: -4px; margin-bottom: 12px;"/>
+
             <div class="login-form-item">
                 <h3>Username</h3>
-                <input value="{{ .Username }}" type="username" name="username" placeholder="joeshmoe"/>
+                <input value="{{ .Username }}" type="username" name="username" placeholder="joeshmoe" autocomplete="username" />
             </div>
+
             <div class="login-form-item">
                 <h3>Password</h3>
-                <input value="{{ .Password }}" type="password" name="password" placeholder="password123"/>
+                <input value="{{ .Password }}" type="password" name="password" placeholder="password123" autocomplete="current-password" />
             </div>
+
             {{ if not .IsLogin }}
             <div class="login-form-item">
                 <h3>Invite Code</h3>
                 <input value="{{ .InviteCode }}" type="text" name="invite" placeholder="C7O6D1E..."/>
             </div>
             {{ end }}
+
             <button class="login-form-submit" type="submit">
                 {{ if .IsLogin }}
                 Login
@@ -58,9 +62,10 @@ document.title = {{ if .IsLogin }} "Login" {{ else }} "Signup" {{ end }}
                 Signup
                 {{ end }}
             </button>
+
             <a 
-                hx-swap="outerHTML"
-                hx-target=".login-form-container"
+                hx-swap="innerHTML"
+                hx-target="#body"
                 hx-put="{{ if .IsLogin }}signup{{ else }}login{{ end }}"
                 hx-push-url="true"
                 href=""
