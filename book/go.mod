@@ -1,4 +1,4 @@
-module gavrh/server
+module gavrh/book
 
 go 1.23.4
 

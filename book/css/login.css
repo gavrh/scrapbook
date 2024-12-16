@@ -33,10 +33,10 @@
 .login-form-item {
     color: #505050;
     height: 20%;
-    margin-bottom: auto;
+    margin-bottom: 10px;
 }
 .login-form-item h3 {
-    padding-bottom: 5px;
+    margin-bottom: 5px;
 }
 .login-form-item input {
     width: 95%;
@@ -45,7 +45,7 @@
 
 .login-form-submit {
     width: 25%;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-right: auto;
     margin-left: auto;
 }
