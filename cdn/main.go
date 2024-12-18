@@ -4,11 +4,12 @@ import (
 	"gavrh/cdn/encryption"
 
 	"encoding/json"
+	"math/rand"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
-    "math/rand"
-    "strconv"
+    "net/http"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -43,12 +44,16 @@ func main() {
     go interruptExit(channel, key)
     os.Remove(".env")
 
-    // encryption.EncryptFile("storage/users/picture.jpeg", "storage/encrypted/picture", key)
-    
+    // encryption.EncryptFile("storage/users/prime.mkv", "storage/encrypted/prime", key)
 
     e := echo.New()
     e.Use(middleware.Logger())
-    // e.Logger.SetOutput(io.Discard) | disables logger
+    e.Use(middleware.CORSWithConfig(middleware.CORSConfig {
+        AllowOrigins: []string{ "https://scrapbook.sytes.net" },
+        AllowHeaders: []string{ echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept },
+        AllowMethods: []string{ http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete },
+    }))
+
     e.GET("/:path/:file", func(c echo.Context) error {
 
         // path := c.Param("path")
@@ -60,18 +65,12 @@ func main() {
         }
         defer f.Close()
 
-        // token authorization check
-        _, err = c.Cookie("token")
-        if err != nil {
-            Err(c, 401, "Not Authorized")
-        }
-
         randNumber := rand.Intn(1000) + 1
         os.Mkdir("storage/temp" + strconv.Itoa(randNumber), 0755)
-        encryption.DecryptFile("storage/encrypted/" + file, "storage/temp" + strconv.Itoa(randNumber) + "/picture.jpeg", key)
+        encryption.DecryptFile("storage/encrypted/" + file, "storage/temp" + strconv.Itoa(randNumber) + "/" + file + ".mkv", key)
         defer os.RemoveAll("storage/temp" + strconv.Itoa(randNumber))
 
-        return c.File("storage/temp" + strconv.Itoa(randNumber) + "/" + file + ".jpeg")
+        return c.File("storage/temp" + strconv.Itoa(randNumber) + "/" + file + ".mkv")
     })
     e.Start(":42069")
 

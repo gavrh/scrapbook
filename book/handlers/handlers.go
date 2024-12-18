@@ -16,39 +16,37 @@ type IndexData struct {
     Id string
 }
 
+func TokenExists(c echo.Context) (*http.Cookie, error) {
+    token, err := c.Cookie("token")
+    return token, err
+}
+
 func HandleRequests(e *echo.Echo, conn *pgx.Conn) {
-    e.GET("/", func(c echo.Context) error {
 
-        // look for token cookie
-        cookies := c.Cookies()
-        var token string
-        for _, cookie := range cookies {
-            if cookie.Name == "token" {
-                token = cookie.Value
-                break
-            }
-        }
+    // get
+    e.GET("/", func (c echo.Context) error { return HandleGet(c, conn) })
+    e.GET("/:path", func (c echo.Context) error { return HandleGet(c, conn) })
 
-        if len(token) != 0 {
+    // post
 
+    // put
+    e.PUT("/:path", func (c echo.Context) error { return HandlePut(c, conn) })
+
+    e.GET("/login", func(c echo.Context) error {
+
+        token, _ := c.Cookie("token")
+        if token != nil {
             var account_id string
             err := conn.QueryRow(context.Background(), "select account_id from accounts").Scan(&account_id)
             if err != nil {
                 fmt.Println(err)
                 os.Exit(1)
             }
-
             fmt.Println(account_id)
-            fmt.Println("test")
-
+            fmt.Println(token)
             return c.Render(http.StatusOK, templates.Index, IndexData{ Id: account_id })
         }
 
-        data := templates.NewLoginTemplate(true, "", "", "")
-        return c.Render(http.StatusOK, templates.Login, data)
-    })
-
-    e.GET("/login", func(c echo.Context) error {
         data := templates.NewLoginTemplate(true, "", "", "")
         return c.Render(http.StatusOK, templates.Login, data)
     })
@@ -57,6 +55,18 @@ func HandleRequests(e *echo.Echo, conn *pgx.Conn) {
         return c.Render(http.StatusOK, templates.LoginForm, data)
     })
     e.GET("/signup", func(c echo.Context) error {
+        token, _ := c.Cookie("token")
+        if token != nil {
+            var account_id string
+            err := conn.QueryRow(context.Background(), "select account_id from accounts").Scan(&account_id)
+            if err != nil {
+                fmt.Println(err)
+                os.Exit(1)
+            }
+            fmt.Println(account_id)
+            fmt.Println(token)
+            return c.Render(http.StatusOK, templates.Index, IndexData{ Id: account_id })
+        }
         invite := c.QueryParam("invite")
         data := templates.NewLoginTemplate(false, "", "", invite)
         return c.Render(http.StatusOK, templates.Signup, data)
