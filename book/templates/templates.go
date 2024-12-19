@@ -27,4 +27,5 @@ const (
     LoginForm = "login-form"
     Signup = "login"
     SignupForm = "login-form"
+    TwoFactor = "2fa"
 )

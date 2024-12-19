@@ -1,17 +1,19 @@
 package main
 
 import (
+	"fmt"
 	"gavrh/cdn/encryption"
 
 	"encoding/json"
 	"math/rand"
+	"net/http"
 	"os"
 	"strconv"
-    "net/http"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/skip2/go-qrcode"
 )
 
 type Error struct {
@@ -55,6 +57,25 @@ func main() {
 
         return c.File("storage/.temp" + strconv.Itoa(randNumber) + "/" + file + ".mkv")
     })
+
+    e.GET("/qr", func (c echo.Context) error {
+        
+        data := c.QueryParam("data")
+        id := c.QueryParam("id")
+        if len(data) == 0 || len(id) == 0 {
+            return nil
+        }
+
+        err := qrcode.WriteFile(data, qrcode.Medium, 256, "storage/qr-" + id + ".png")
+        if err != nil {
+            fmt.Println(err)
+            return nil
+        }
+        defer os.Remove("storage/qr-" + id + ".png")
+
+        return c.File("storage/qr-" + id + ".png")
+    })
+
     e.Start(":42069")
 
 }

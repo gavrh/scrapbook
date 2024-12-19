@@ -7,6 +7,7 @@
         <link href="static/css/default.css" rel="stylesheet">
         <link href="static/css/login.css" rel="stylesheet">
         <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
+        <script src="https://unpkg.com/htmx-ext-disable-element@2.0.0/disable-element.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", (event) => {
 
@@ -33,7 +34,17 @@
 document.title = {{ if .IsLogin }} "Login" {{ else }} "Signup" {{ end }}
 </script>
 <div class="login-form-container">
-    <form id="login-form" class="login-form">
+    <form id="login-form" class="login-form"
+        hx-swap="innerHTML"
+        hx-target="#body"
+        hx-ext="disable-element"
+        hx-disable-element="self"
+        {{ if .IsLogin }}
+        hx-post="/login"
+        {{ else }}
+        hx-post="/signup"
+        {{ end }}
+    >
         <div class="login-form-items">
             <h1 style="color: #303030; margin-right: auto; margin-left: auto; margin-top: -2px; margin-bottom: 10px;">Scrapbook</h1>
             <hr style="margin-top: -4px; margin-bottom: 12px;"/>

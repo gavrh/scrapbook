@@ -1,0 +1,31 @@
+{{ block "2fa" .  }}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>index</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width", initial-scale=1>
+        <link href="static/css/default.css" rel="stylesheet">
+        <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
+    </head>
+    <body>
+        <h1>
+            {{ .AccountId }}
+        </h1>
+        <h1>
+            {{ .Login }}
+        </h1>
+        <h1>
+            {{ .TwoFactorSecret }}
+        </h1>
+        <h1>
+            {{ .TwoFactorIsSetup }}
+        </h1>
+        {{ if not .TwoFactorIsSetup }}
+        <img 
+            src="http://localhost:42069/qr?data=otpauth://totp/Scrapbook:{{ .Login }}?issuer=Scrapbook%26secret={{ .TwoFactorSecret }}&id={{ .AccountId }}"
+        />
+        {{ end }}
+    </body>
+</html>
+{{ end }}

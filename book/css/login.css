@@ -52,3 +52,8 @@
 .login-form-submit:hover {
     cursor: pointer;
 }
+.login-form-submit:disabled {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+}

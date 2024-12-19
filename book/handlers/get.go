@@ -28,6 +28,11 @@ func HandleGet(c echo.Context, conn *pgx.Conn) error {
             return c.Render(http.StatusOK, templates.Login, data)
         }
 
+        if ok := ValidateToken(token.Value); !ok {
+            data := templates.NewLoginTemplate(true, "", "", "")
+            return c.Render(http.StatusOK, templates.Login, data)
+        }
+
         var account_id string
         err = conn.QueryRow(context.Background(), "select account_id from accounts").Scan(&account_id)
         if err != nil {

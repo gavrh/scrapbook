@@ -16,11 +16,6 @@ type IndexData struct {
     Id string
 }
 
-func TokenExists(c echo.Context) (*http.Cookie, error) {
-    token, err := c.Cookie("token")
-    return token, err
-}
-
 func HandleRequests(e *echo.Echo, conn *pgx.Conn) {
 
     // get
@@ -28,6 +23,7 @@ func HandleRequests(e *echo.Echo, conn *pgx.Conn) {
     e.GET("/:path", func (c echo.Context) error { return HandleGet(c, conn) })
 
     // post
+    e.POST("/:path", func (c echo.Context) error { return HandlePost(c, conn) })
 
     // put
     e.PUT("/:path", func (c echo.Context) error { return HandlePut(c, conn) })
