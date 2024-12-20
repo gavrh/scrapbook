@@ -16,14 +16,14 @@ type IndexData struct {
     Id string
 }
 
-func HandleRequests(e *echo.Echo, conn *pgx.Conn) {
+func HandleRequests(e *echo.Echo, jwtSecret string, conn *pgx.Conn) {
 
     // get
-    e.GET("/", func (c echo.Context) error { return HandleGet(c, conn) })
-    e.GET("/:path", func (c echo.Context) error { return HandleGet(c, conn) })
+    e.GET("/", func (c echo.Context) error { return HandleGet(c, jwtSecret, conn) })
+    e.GET("/:path", func (c echo.Context) error { return HandleGet(c, jwtSecret, conn) })
 
     // post
-    e.POST("/:path", func (c echo.Context) error { return HandlePost(c, conn) })
+    e.POST("/:path", func (c echo.Context) error { return HandlePost(c, jwtSecret, conn) })
 
     // put
     e.PUT("/:path", func (c echo.Context) error { return HandlePut(c, conn) })

@@ -7,6 +7,14 @@
         <meta name="viewport" content="width=device-width", initial-scale=1>
         <link href="static/css/default.css" rel="stylesheet">
         <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", (event) => {
+
+                // for redirect because 2fa not complete
+                window.history.replaceState({}, "", "2fa");
+
+            })
+        </script>
     </head>
     <body>
         <h1>

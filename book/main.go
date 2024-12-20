@@ -17,6 +17,7 @@ import (
 func main() {
 
     env, _ := godotenv.Read(".env")
+    jwtSecret := env["JWT_SECRET"]
     conn, err := pgx.Connect(context.Background(), env["DATABASE_URL"])
     if err != nil {
         os.Exit(1)
@@ -27,7 +28,7 @@ func main() {
     e.Use(middleware.Logger())
     e.Static("/static/css", "css")
     e.Renderer = templates.NewTemplate()
-    handlers.HandleRequests(e, conn)
+    handlers.HandleRequests(e, jwtSecret, conn)
     // e.Logger.SetOutput(io.Discard) | disables logger
     e.Start(":420")
 
