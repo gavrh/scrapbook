@@ -25,14 +25,14 @@ func HandlePost(c echo.Context, conn *pgx.Conn) error {
 
         var account_id string
         var account_2fa_secret string
-        var account_2fa_is_setup bool
+        var account_setup_complete bool
         var user_login string
         err := conn.QueryRow(context.Background(),
-            "SELECT account_id, account_2fa_secret, account_2fa_is_setup, user_login FROM users " +
+            "SELECT account_id, account_2fa_secret, account_setup_complete, user_login FROM users " +
             "INNER JOIN accounts USING(account_id)" +
             "WHERE user_login = '" + login + "' " +
             "AND user_password = '" + password + "'",
-        ).Scan(&account_id, &account_2fa_secret, &account_2fa_is_setup, &user_login)
+        ).Scan(&account_id, &account_2fa_secret, &account_setup_complete, &user_login)
         if err != nil {
             fmt.Println(err)
         }
@@ -44,9 +44,9 @@ func HandlePost(c echo.Context, conn *pgx.Conn) error {
 
         c.Response().Header().Add("Hx-Push-Url", "/2fa")
 
-        fmt.Println("DATA", account_id, user_login, account_2fa_secret, account_2fa_is_setup)
+        fmt.Println("DATA", account_id, user_login, account_2fa_secret, account_setup_complete)
 
-        data := templates.NewTwoFactorTemplate(account_id, user_login, account_2fa_secret, account_2fa_is_setup)
+        data := templates.NewTwoFactorTemplate(account_id, user_login, account_2fa_secret, account_setup_complete)
         return c.Render(http.StatusOK, templates.TwoFactor, data)
         
 

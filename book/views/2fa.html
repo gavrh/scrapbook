@@ -19,9 +19,9 @@
             {{ .TwoFactorSecret }}
         </h1>
         <h1>
-            {{ .TwoFactorIsSetup }}
+            {{ .AccountSetupComplete }}
         </h1>
-        {{ if not .TwoFactorIsSetup }}
+        {{ if not .AccountSetupComplete }}
         <img 
             src="http://localhost:42069/qr?data=otpauth://totp/Scrapbook:{{ .Login }}?issuer=Scrapbook%26secret={{ .TwoFactorSecret }}&id={{ .AccountId }}"
         />

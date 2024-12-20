@@ -4,14 +4,14 @@ type TwoFactorTemplate struct {
     AccountId string
     Login string
     TwoFactorSecret string
-    TwoFactorIsSetup bool
+    AccountSetupComplete bool
 }
 
-func NewTwoFactorTemplate(accountId string, login string, twoFactorSecret string, twoFactorIsSetup bool) TwoFactorTemplate {
+func NewTwoFactorTemplate(accountId string, login string, twoFactorSecret string, accountSetupComplete bool) TwoFactorTemplate {
     return TwoFactorTemplate {
         AccountId: accountId,
         Login: login,
         TwoFactorSecret: twoFactorSecret,
-        TwoFactorIsSetup: twoFactorIsSetup,
+        AccountSetupComplete: accountSetupComplete,
     }
 }

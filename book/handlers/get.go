@@ -51,6 +51,10 @@ func HandleGet(c echo.Context, conn *pgx.Conn) error {
         // "signup"
         case "signup":
 
+        // temp while has no favicon.ico
+        case "favicon.ico":
+            return nil
+
     }
     
     return c.Redirect(303, "/")
