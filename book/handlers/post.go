@@ -35,6 +35,8 @@ func HandlePost(c echo.Context, jwtSecret string, conn *pgx.Conn) error {
         ).Scan(&account_id, &account_2fa_secret, &account_setup_complete, &user_login)
         if err != nil {
             fmt.Println(err)
+            data := templates.NewLoginTemplate(true, login, "", "")
+            return c.Render(http.StatusOK, templates.Login, data)
         }
         
         token, err := CreateToken(account_id, c.Request().RemoteAddr, false, jwtSecret)
@@ -46,7 +48,7 @@ func HandlePost(c echo.Context, jwtSecret string, conn *pgx.Conn) error {
         return c.Render(http.StatusOK, templates.TwoFactor, data)
         
 
-    // "signup"
+    // "/signup"
     case "signup":
         
     }

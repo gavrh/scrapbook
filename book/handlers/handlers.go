@@ -6,7 +6,6 @@ import (
     "fmt"
     "net/http"
     "context"
-    "os"
 
     "github.com/labstack/echo/v4"
     "github.com/jackc/pgx/v5"
@@ -29,18 +28,30 @@ func HandleRequests(e *echo.Echo, jwtSecret string, conn *pgx.Conn) {
     e.PUT("/:path", func (c echo.Context) error { return HandlePut(c, conn) })
 
     e.GET("/login", func(c echo.Context) error {
+        // look for token cookie
+        token, err := c.Cookie("token")
+        if err == nil {
+            account_id, twoFactorComplete, ok := ValidateToken(token.Value, c.Request().RemoteAddr, jwtSecret)
+            if ok {
+                var account_2fa_secret string
+                var account_setup_complete bool
+                var user_login string
+                err = conn.QueryRow(context.Background(),
+                    "SELECT account_id, account_2fa_secret, account_setup_complete, user_login FROM users " +
+                    "INNER JOIN accounts USING(account_id)" +
+                    "WHERE account_id = '" + account_id + "'",
+                    ).Scan(&account_id, &account_2fa_secret, &account_setup_complete, &user_login)
+                if err != nil {
+                    fmt.Println(err)
+                }
 
-        token, _ := c.Cookie("token")
-        if token != nil {
-            var account_id string
-            err := conn.QueryRow(context.Background(), "select account_id from accounts").Scan(&account_id)
-            if err != nil {
-                fmt.Println(err)
-                os.Exit(1)
+                if !twoFactorComplete {
+                    data := templates.NewTwoFactorTemplate(account_id, user_login, account_2fa_secret, account_setup_complete)
+                    return c.Render(http.StatusOK, templates.TwoFactor, data)
+                }
+                
+                return c.Render(http.StatusOK, templates.Index, IndexData { Id: account_id })
             }
-            fmt.Println(account_id)
-            fmt.Println(token)
-            return c.Render(http.StatusOK, templates.Index, IndexData{ Id: account_id })
         }
 
         data := templates.NewLoginTemplate(true, "", "", "")
@@ -51,18 +62,32 @@ func HandleRequests(e *echo.Echo, jwtSecret string, conn *pgx.Conn) {
         return c.Render(http.StatusOK, templates.LoginForm, data)
     })
     e.GET("/signup", func(c echo.Context) error {
-        token, _ := c.Cookie("token")
-        if token != nil {
-            var account_id string
-            err := conn.QueryRow(context.Background(), "select account_id from accounts").Scan(&account_id)
-            if err != nil {
-                fmt.Println(err)
-                os.Exit(1)
+        // look for token cookie
+        token, err := c.Cookie("token")
+        if err == nil {
+            account_id, twoFactorComplete, ok := ValidateToken(token.Value, c.Request().RemoteAddr, jwtSecret)
+            if ok {
+                var account_2fa_secret string
+                var account_setup_complete bool
+                var user_login string
+                err = conn.QueryRow(context.Background(),
+                    "SELECT account_id, account_2fa_secret, account_setup_complete, user_login FROM users " +
+                    "INNER JOIN accounts USING(account_id)" +
+                    "WHERE account_id = '" + account_id + "'",
+                    ).Scan(&account_id, &account_2fa_secret, &account_setup_complete, &user_login)
+                if err != nil {
+                    fmt.Println(err)
+                }
+
+                if !twoFactorComplete {
+                    data := templates.NewTwoFactorTemplate(account_id, user_login, account_2fa_secret, account_setup_complete)
+                    return c.Render(http.StatusOK, templates.TwoFactor, data)
+                }
+                
+                return c.Render(http.StatusOK, templates.Index, IndexData { Id: account_id })
             }
-            fmt.Println(account_id)
-            fmt.Println(token)
-            return c.Render(http.StatusOK, templates.Index, IndexData{ Id: account_id })
         }
+
         invite := c.QueryParam("invite")
         data := templates.NewLoginTemplate(false, "", "", invite)
         return c.Render(http.StatusOK, templates.Signup, data)

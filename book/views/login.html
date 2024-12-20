@@ -38,7 +38,7 @@ document.title = {{ if .IsLogin }} "Login" {{ else }} "Signup" {{ end }}
         hx-swap="innerHTML"
         hx-target="#body"
         hx-ext="disable-element"
-        hx-disable-element="self"
+        hx-disable-element=".login-form-inputs"
         {{ if .IsLogin }}
         hx-post="/login"
         {{ else }}
@@ -51,12 +51,12 @@ document.title = {{ if .IsLogin }} "Login" {{ else }} "Signup" {{ end }}
 
             <div class="login-form-item">
                 <h3>Username</h3>
-                <input value="{{ .Username }}" type="username" name="username" placeholder="joeshmoe" autocomplete="username" />
+                <input class="login-form-inputs" value="{{ .Username }}" type="username" name="username" placeholder="joeshmoe" autocomplete="username" />
             </div>
 
             <div class="login-form-item">
                 <h3>Password</h3>
-                <input value="{{ .Password }}" type="password" name="password" placeholder="password123" autocomplete="current-password" />
+                <input class="login-form-inputs" value="{{ .Password }}" type="password" name="password" placeholder="password123" autocomplete="current-password" />
             </div>
 
             {{ if not .IsLogin }}
