@@ -2,6 +2,7 @@
 tmp
 go.sum
 main
+book
 
 # cdn
 storage
