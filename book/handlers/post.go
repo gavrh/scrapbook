@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"gavrh/book/handlers/otherHandlers"
 	"gavrh/book/templates"
 
 	"context"
@@ -39,7 +40,7 @@ func HandlePost(c echo.Context, jwtSecret string, conn *pgx.Conn) error {
             return c.Render(http.StatusOK, templates.Login, data)
         }
         
-        token, err := CreateToken(account_id, c.Request().RemoteAddr, false, jwtSecret)
+        token, err := otherHandlers.CreateToken(account_id, c.Request().RemoteAddr, false, jwtSecret)
 
         c.Response().Header().Add("Hx-Push-Url", "/2fa")
         c.Response().Header().Add("Set-Cookie", "token="+token+"; domain=localhost;")
