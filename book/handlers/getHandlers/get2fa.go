@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/labstack/echo/v4"
 )
 
-func HandleGetTwoFactor(c echo.Context, jwtSecret string, conn *pgx.Conn) error {
+func HandleGetTwoFactor(c echo.Context, jwtSecret string, pool *pgxpool.Pool) error {
     tokenCookie, tokenError := c.Cookie("token")
     if tokenError != nil {
         return c.Redirect(http.StatusSeeOther, "/login")
@@ -30,7 +30,7 @@ func HandleGetTwoFactor(c echo.Context, jwtSecret string, conn *pgx.Conn) error 
     var account_2fa_secret string
     var account_setup_complete bool
     var user_login string
-    err := conn.QueryRow(context.Background(),
+    err := pool.QueryRow(context.Background(),
         "SELECT account_id, account_2fa_secret, account_setup_complete, user_login FROM users " +
         "INNER JOIN accounts USING(account_id)" +
         "WHERE account_id = '" + account_id + "'",

@@ -67,7 +67,7 @@ func main() {
             return nil
         }
 
-        err := qrcode.WriteFile(data, qrcode.Medium, 256, "storage/qr-" + id + ".png")
+        err := qrcode.WriteFile(data, qrcode.Medium, 240, "storage/qr-" + id + ".png")
         if err != nil {
             fmt.Println(err)
             return nil

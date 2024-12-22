@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width", initial-scale=1>
         <link href="static/css/dist.css" rel="stylesheet">
         <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
+        <script src="https://unpkg.com/htmx-ext-disable-element@2.0.0/disable-element.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", (event) => {
 
@@ -13,14 +14,17 @@
                 window.history.replaceState({}, "", "2fa");
 
                 document.title="2fa - @{{ .Login }}";
-                document.getElementById("code-input").focus();
 
             })
         </script>
     </head>
     <body id="#body">
         <div class="w-full h-screen flex items-center justify-center">
-            <form class="flex items-center justify-center w-[300px] bg-[#e3e3e3] py-[10px] rounded-[10px] shadow-xl">
+            <form 
+                class="flex items-center justify-center w-[300px] bg-[#e3e3e3] py-[10px] rounded-[10px] shadow-xl"
+                hx-ext="disable-element"
+                hx-disable-element=".disable-on-submit"
+            >
                 <div class="flex flex-col w-[80%] h-[80%] py-[30px]">
                     <h1 class="text-xl font-semibold text-[#303030] mx-auto mb-[20px] underline">
                         Two Factor Auth
@@ -29,10 +33,10 @@
                     {{ if not .AccountSetupComplete }}
                     <h1 class="text-[#303030] font-semibold">You're almost done!</h1>
                     <p class="pb-[10px]">Use this qr code to setup 2FA:</p>
-                    <a style="margin-bottom: 15px; margin-left: auto; margin-right: auto;" href="https://support.google.com/accounts/answer/1066447?hl=en&co=GENIE.Platform%3DiOS&oco=0" target="_blank">
-                        How to setup authenticator
-                    </a>
                     {{ template "2fa-qr" . }}
+                    <a style="margin-top: 15px; margin-left: auto; margin-right: auto;" href="https://support.google.com/accounts/answer/1066447?hl=en&co=GENIE.Platform%3DiOS&oco=0" target="_blank">
+                        Need help?
+                    </a>
                     <div class="w-full h-[2px] rounded-full bg-[#303030] my-[20px] opacity-50"></div>
                     {{ end }}
 
@@ -79,25 +83,23 @@
                             disabled:opacity-70
                             disabled:hover:cursor-not-allowed
                             mx-auto
-                            mt-[10px]
+                            mt-[5px]
                         "
-                        hx-swap="innerHTML"
-                        hx-target="#body"
-                        hx-replace-url="true"
-                        hx-post="logout"
+                        onclick="document.cookie='token=; exires=Thu, 01 Jan 1970 00:00:00 GMT'; location.reload();"
                     >
                         Logout
                     </button>
                 </div>
             </form>
         </div>
+        <script>document.getElementById("code-input").focus();</script>
     </body>
 </html>
 {{ end }}
 
 {{ block "2fa-qr" . }}
 <img 
-    style="border-radius: 10px;"
+    class="w-[240px] h-[240px] rounded-md"
     src="http://localhost:42069/qr?data=otpauth://totp/Scrapbook:@{{ .Login }}?issuer=Scrapbook%26secret={{ .TwoFactorSecret }}&id={{ .AccountId }}"
 />
 {{ end }}

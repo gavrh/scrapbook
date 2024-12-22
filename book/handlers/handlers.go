@@ -6,20 +6,20 @@ import (
     "net/http"
 
     "github.com/labstack/echo/v4"
-    "github.com/jackc/pgx/v5"
+    "github.com/jackc/pgx/v5/pgxpool"
 )
 
-func HandleRequests(e *echo.Echo, jwtSecret string, conn *pgx.Conn) {
+func HandleRequests(e *echo.Echo, jwtSecret string, pool *pgxpool.Pool) {
 
     // get
-    e.GET("/", func (c echo.Context) error { return HandleGet(c, jwtSecret, conn) })
-    e.GET("/:path", func (c echo.Context) error { return HandleGet(c, jwtSecret, conn) })
+    e.GET("/", func (c echo.Context) error { return HandleGet(c, jwtSecret, pool) })
+    e.GET("/:path", func (c echo.Context) error { return HandleGet(c, jwtSecret, pool) })
 
     // post
-    e.POST("/:path", func (c echo.Context) error { return HandlePost(c, jwtSecret, conn) })
+    e.POST("/:path", func (c echo.Context) error { return HandlePost(c, jwtSecret, pool) })
 
     // put
-    e.PUT("/:path", func (c echo.Context) error { return HandlePut(c, conn) })
+    e.PUT("/:path", func (c echo.Context) error { return HandlePut(c, pool) })
 
     e.PUT("/login", func (c echo.Context) error {
         data := templates.NewLoginTemplate(true, c.FormValue("username"), c.FormValue("password"), "")

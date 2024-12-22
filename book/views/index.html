@@ -6,7 +6,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width", initial-scale=1>
         <link href="static/css/dist.css" rel="stylesheet">
-        <link href="static/css/2fa.css" rel="stylesheet">
         <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", (event) => {
@@ -22,17 +21,25 @@
             })
         </script>
     </head>
-    <body>
-        <h1>{{ .Id }}</h1>
-        <video width="960" height="540" controls>
-            <source src="http://localhost:42069/users/prime" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <video width="960" height="540" controls>
-            <source src="http://localhost:42069/users/video" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <a href="http://localhost:42069/users/video">Download Video</a>
+    <body id="body">
+        <!-- app container -->
+        <div
+            class="
+                w-full
+                h-screen
+                flex
+            "
+        >
+            <!-- left bar -->
+            <!-- right bar -->
+            <div>
+                <!-- header -->
+                <!-- main display -->
+            </div>
+        </div>
     </body>
 </html>
+{{ end }}
+
+{{ block "mainDisplay" . }}
 {{ end }}

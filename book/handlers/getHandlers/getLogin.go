@@ -8,15 +8,14 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/labstack/echo/v4"
 )
 
-func HandleGetLogin(c echo.Context, jwtSecret string, conn *pgx.Conn) error {
-    tokenCookie, tokenError := c.Cookie("token")
-    if tokenError == nil {
-        account_id, twoFactorComplete, ok := otherHandlers.ValidateToken(tokenCookie, c.Request().RemoteAddr, jwtSecret)
-        if ok {
+func HandleGetLogin(c echo.Context, jwtSecret string, pool *pgxpool.Pool) error {
+    if tokenCookie, tokenError := c.Cookie("token"); tokenError == nil {
+        fmt.Println(tokenCookie.Value)
+        if account_id, twoFactorComplete, ok := otherHandlers.ValidateToken(tokenCookie, c.Request().RemoteAddr, jwtSecret); ok {
             if !twoFactorComplete {
                 return c.Redirect(http.StatusSeeOther, "/2fa")
             }
@@ -24,7 +23,7 @@ func HandleGetLogin(c echo.Context, jwtSecret string, conn *pgx.Conn) error {
             var account_2fa_secret string
             var account_setup_complete bool
             var user_login string
-            err := conn.QueryRow(context.Background(),
+            err := pool.QueryRow(context.Background(),
                 "SELECT account_id, account_2fa_secret, account_setup_complete, user_login FROM users " +
                 "INNER JOIN accounts USING(account_id)" +
                 "WHERE account_id = '" + account_id + "'",

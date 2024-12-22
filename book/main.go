@@ -9,7 +9,7 @@ import (
 	"context"
 	"os"
 
-	"github.com/jackc/pgx/v5"
+    "github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -19,18 +19,19 @@ func main() {
 
     env, _ := godotenv.Read(".env")
     jwtSecret := env["JWT_SECRET"]
-    conn, err := pgx.Connect(context.Background(), env["DATABASE_URL"])
+    pool, err := pgxpool.New(context.Background(), env["DATABASE_URL"])
     if err != nil {
         fmt.Println("could not connect to psql database.")
         os.Exit(1)
     }
-    defer conn.Close(context.Background())
+    defer pool.Close()
 
     e := echo.New()
     e.Use(middleware.Logger())
+    e.IPExtractor = echo.ExtractIPDirect()
     e.Static("/static/css", "css")
     e.Renderer = templates.NewTemplate()
-    handlers.HandleRequests(e, jwtSecret, conn)
+    handlers.HandleRequests(e, jwtSecret, pool)
     // e.Logger.SetOutput(io.Discard) | disables logger
     e.Start(":420")
 
