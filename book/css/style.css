@@ -2,13 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
+html, body {
+    background-color: #f8fafd;
+    width: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
-}
-
-body {
-    background-color: #f8fafd;
 }
 
 :link { color: #00008A; text-decoration: underline; }

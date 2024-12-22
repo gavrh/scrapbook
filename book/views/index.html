@@ -26,20 +26,41 @@
         <div
             class="
                 w-full
-                h-screen
+                h-full
                 flex
+                overflow-y-hidden
             "
         >
             <!-- left bar -->
-            <!-- right bar -->
-            <div>
+            <div
+                class="
+                    sticky
+                    w-[250px]
+                    h-full
+                "
+            >
+                {{ template "sidebar" . }}
+            </div>
+            <!-- right side -->
+            <div class="flex flex-col w-full h-full">
                 <!-- header -->
+                <div
+                    class="
+                        sticky
+                        w-full
+                        h-[75px]
+                    "
+                >
+                    {{ template "header" . }}
+                </div>
                 <!-- main display -->
+                <div class="flex w-full h-full">
+                    <div class="w-full h-full bg-red-500 rounded-tl-3xl overflow-y-scroll">
+                        {{ template "main" . }}
+                    </div>
+                </div>
             </div>
         </div>
     </body>
 </html>
-{{ end }}
-
-{{ block "mainDisplay" . }}
 {{ end }}

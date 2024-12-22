@@ -19,6 +19,7 @@ func HandleGetDefault(c echo.Context, jwtSecret string, pool *pgxpool.Pool) erro
     }
     account_id, twoFactorComplete, ok := otherHandlers.ValidateToken(tokenCookie, c.Request().RemoteAddr, jwtSecret)
     if !ok {
+        fmt.Println("here 1")
         data := templates.NewLoginTemplate(true, "", "", "")
         return c.Render(http.StatusOK, templates.Login, data)
     }
