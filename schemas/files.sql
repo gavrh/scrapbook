@@ -4,5 +4,8 @@ CREATE TABLE files (
     file_type VARCHAR(24) NOT NULL,
     file_updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     file_created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (account_id, file_name)
+    PRIMARY KEY (account_id, file_name),
+    FOREIGN KEY (account_id)
+        REFERENCES accounts(account_id)
+        ON DELETE CASCADE
 );

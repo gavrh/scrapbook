@@ -17,9 +17,35 @@
         </script>
     </head>
     <body>
-        <form class="twofactor-form-container">
+        <link href="static/css/2fa.css" rel="stylesheet">
+        <div class="twofactor-form-container">
+            <form class="twofactor-form">
+                <div class="twofactor-form-items">
+                    {{ if not .AccountSetupComplete }}
+                    <h3>You're almost done!</h3>
+                    <p style="padding-bottom: 15px">You need to setup 2fa using this qr code:</p>
+                    {{ template "2fa-qr" . }}
+                    <a style="padding-top: 10px; padding-bottom: 20px; margin-left: auto; margin-right: auto;" href="https://support.google.com/accounts/answer/1066447?hl=en&co=GENIE.Platform%3DiOS&oco=0" target="_blank">
+                        How to setup authenticator
+                    </a>
+                    {{ end }}
 
-        </form>
+                    <h2 style="color: #303030; margin-right: auto; margin-left: auto; margin-top: -2px; margin-bottom: 10px;">
+                        Two Factor Auth
+                    </h2>
+                    <hr style="margin-top: -4px; margin-bottom: 12px;"/>
+                    <div class="twofactor-form-item">
+                        <h3>Auth Code</h3>
+                        <input class="twofactor-form-inputs" name="code" placeholder="000000" />
+                    </div>
+
+                    <button class="twofactor-form-submit" type="submit">
+                        Verify
+                    </button>
+                </div>
+            </form>
+        </div>
+
         <h1>
             {{ .AccountId }}
         </h1>
@@ -41,6 +67,7 @@
 
 {{ block "2fa-qr" . }}
 <img 
+    style="border-radius: 10px;"
     src="http://localhost:42069/qr?data=otpauth://totp/Scrapbook:@{{ .Login }}?issuer=Scrapbook%26secret={{ .TwoFactorSecret }}&id={{ .AccountId }}"
 />
 {{ end }}

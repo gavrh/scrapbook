@@ -1,11 +1,10 @@
 {{ block "login" . }}
 <!DOCTYPE html>
-<html lang="en">
+<html id="html" lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width", initial-scale=1>
         <link href="static/css/default.css" rel="stylesheet">
-        <link href="static/css/login.css" rel="stylesheet">
         <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
         <script src="https://unpkg.com/htmx-ext-disable-element@2.0.0/disable-element.js"></script>
         <script>
@@ -30,12 +29,13 @@
 {{ end }}
 
 {{ block "login-form" . }}
+<link href="static/css/login.css" rel="stylesheet">
 <script>
 document.title = {{ if .IsLogin }} "Login" {{ else }} "Signup" {{ end }}
 </script>
 <div class="login-form-container">
     <form id="login-form" class="login-form"
-        hx-swap="innerHTML"
+        hx-replace-url="true"
         hx-target="#body"
         hx-ext="disable-element"
         hx-disable-element=".login-form-inputs"
