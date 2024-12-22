@@ -17,6 +17,9 @@
         </script>
     </head>
     <body>
+        <form class="twofactor-form-container">
+
+        </form>
         <h1>
             {{ .AccountId }}
         </h1>
@@ -30,10 +33,14 @@
             {{ .AccountSetupComplete }}
         </h1>
         {{ if not .AccountSetupComplete }}
-        <img 
-            src="http://localhost:42069/qr?data=otpauth://totp/Scrapbook:@{{ .Login }}?issuer=Scrapbook%26secret={{ .TwoFactorSecret }}&id={{ .AccountId }}"
-        />
+        {{ template "2fa-qr" . }}
         {{ end }}
     </body>
 </html>
+{{ end }}
+
+{{ block "2fa-qr" . }}
+<img 
+    src="http://localhost:42069/qr?data=otpauth://totp/Scrapbook:@{{ .Login }}?issuer=Scrapbook%26secret={{ .TwoFactorSecret }}&id={{ .AccountId }}"
+/>
 {{ end }}
