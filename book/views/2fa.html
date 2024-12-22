@@ -2,11 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>index</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width", initial-scale=1>
         <link href="static/css/dist.css" rel="stylesheet">
-        <link href="static/css/2fa.css" rel="stylesheet">
         <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", (event) => {
@@ -14,52 +12,82 @@
                 // for redirect because 2fa not complete
                 window.history.replaceState({}, "", "2fa");
 
+                document.title="2fa - @{{ .Login }}";
+                document.getElementById("code-input").focus();
+
             })
         </script>
     </head>
     <body id="#body">
         <div class="w-full h-screen flex items-center justify-center">
-            <form class="twofactor-form">
-                <div class="twofactor-form-items">
+            <form class="flex items-center justify-center w-[300px] bg-[#e3e3e3] py-[10px] rounded-[10px] shadow-xl">
+                <div class="flex flex-col w-[80%] h-[80%] py-[30px]">
+                    <h1 class="text-xl font-semibold text-[#303030] mx-auto mb-[20px] underline">
+                        Two Factor Auth
+                    </h1>
+
                     {{ if not .AccountSetupComplete }}
-                    <h3>You're almost done!</h3>
-                    <p style="padding-bottom: 15px">You need to setup 2fa using this qr code:</p>
-                    {{ template "2fa-qr" . }}
-                    <a style="padding-top: 10px; padding-bottom: 20px; margin-left: auto; margin-right: auto;" href="https://support.google.com/accounts/answer/1066447?hl=en&co=GENIE.Platform%3DiOS&oco=0" target="_blank">
+                    <h1 class="text-[#303030] font-semibold">You're almost done!</h1>
+                    <p class="pb-[10px]">Use this qr code to setup 2FA:</p>
+                    <a style="margin-bottom: 15px; margin-left: auto; margin-right: auto;" href="https://support.google.com/accounts/answer/1066447?hl=en&co=GENIE.Platform%3DiOS&oco=0" target="_blank">
                         How to setup authenticator
                     </a>
+                    {{ template "2fa-qr" . }}
+                    <div class="w-full h-[2px] rounded-full bg-[#303030] my-[20px] opacity-50"></div>
                     {{ end }}
 
-                    <h2 style="color: #303030; margin-right: auto; margin-left: auto; margin-top: -2px; margin-bottom: 10px;">
-                        Two Factor Auth
-                    </h2>
-                    <hr style="margin-top: -4px; margin-bottom: 12px;"/>
-                    <div class="twofactor-form-item">
-                        <h3>Auth Code</h3>
-                        <input class="twofactor-form-inputs" type="number" name="code" placeholder="000000" />
+                    <div class="text-[#505050] w-full mb-[10px]">
+                        <h3 class="ml-[5px] mb-[3px]">Auth Code</h3>
+                        <input required maxlength="6" minlength="6" id="code-input" class="disable-on-submit w-full p-[8px] text-[#303030] rounded-md shadow-sm" type="number" name="code" placeholder="000000" />
                     </div>
 
                     <button
+                        class="
+                            disable-on-submit
+                            bg-[#303030]
+                            my-[15px]
+                            py-[8px]
+                            rounded-md
+                            bg-opacity-20
+                            hover:bg-opacity-30
+                            disabled:bg-opacity-10
+                            disabled:hover:bg-opacity-10
+                            disabled:hover:cursor-not-allowed
+                        "
                         hx-post="2fa"
                         hx-vals='{
-                        "account_id": "{{ .AccountId }}",
-                        "user_login": "{{ .Login }}",
-                        "account_2fa_secret": "{{ .TwoFactorSecret }}",
-                        "account_setup_complete": "{{ .AccountSetupComplete }}"
+                            "account_id": "{{ .AccountId }}",
+                            "user_login": "{{ .Login }}",
+                            "account_2fa_secret": "{{ .TwoFactorSecret }}",
+                            "account_setup_complete": "{{ .AccountSetupComplete }}"
                         }'
                         hx-swap="innerHTML"
                         hx-target="#body"
-                        class="twofactor-form-submit"
                         type="submit"
                     >
                         Verify
                     </button>
-                    <p style="margin-top: 20px; margin-right: auto; margin-left: auto;">
-                        Signed in as @{{ .Login }}
+                    <p class="mx-auto mt-[5px]">
+                        <span>Logged in as </span><span class="font-semibold">@{{ .Login }}</span>
                     </p>
-                    <a style="padding-top: 5px; margin-left: auto; margin-right: auto;" href="">
+                    <button 
+                        class="
+                            disable-on-submit
+                            text-link
+                            underline
+                            active:text-link-active
+                            disabled:opacity-70
+                            disabled:hover:cursor-not-allowed
+                            mx-auto
+                            mt-[10px]
+                        "
+                        hx-swap="innerHTML"
+                        hx-target="#body"
+                        hx-replace-url="true"
+                        hx-post="logout"
+                    >
                         Logout
-                    </a>
+                    </button>
                 </div>
             </form>
         </div>

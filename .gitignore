@@ -7,6 +7,9 @@ book
 # npm
 node_modules
 
+# css
+dist.css
+
 # cdn
 storage
 
