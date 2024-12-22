@@ -28,13 +28,14 @@ func main() {
 
     env, _ := godotenv.Read(".env")
     key := []byte(env["ENCRYPTION_KEY"])
+    site := env["SITE_URL"]
 
     // encryption.EncryptFile("storage/users/prime.mkv", "storage/encrypted/prime", key)
 
     e := echo.New()
     e.Use(middleware.Logger())
     e.Use(middleware.CORSWithConfig(middleware.CORSConfig {
-        AllowOrigins: []string{ "https://scrapbook.sytes.net" },
+        AllowOrigins: []string{ site },
         AllowHeaders: []string{ echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept },
         AllowMethods: []string{ http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete },
     }))
