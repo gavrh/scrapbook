@@ -4,6 +4,9 @@ go.sum
 main
 book
 
+# npm
+node_modules
+
 # cdn
 storage
 

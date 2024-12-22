@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width", initial-scale=1>
-        <link href="static/css/default.css" rel="stylesheet">
+        <link href="static/css/dist.css" rel="stylesheet">
         <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
         <script src="https://unpkg.com/htmx-ext-disable-element@2.0.0/disable-element.js"></script>
         <script>
@@ -29,44 +29,48 @@
 {{ end }}
 
 {{ block "login-form" . }}
-<link href="static/css/login.css" rel="stylesheet">
 <script>
 document.title = {{ if .IsLogin }} "Login" {{ else }} "Signup" {{ end }}
 </script>
-<div class="login-form-container">
-    <form id="login-form" class="login-form"
+<div class="w-full h-screen flex items-center justify-center">
+    <form
+        class="flex items-center justify-center w-[300px] bg-[#e3e3e3] py-[10px] rounded-[10px] shadow-xl"
         hx-replace-url="true"
         hx-target="#body"
         hx-ext="disable-element"
-        hx-disable-element=".login-form-inputs"
+        hx-disable-element=".disable-on-submit"
         {{ if .IsLogin }}
         hx-post="/login"
         {{ else }}
         hx-post="/signup"
         {{ end }}
     >
-        <div class="login-form-items">
-            <h1 style="color: #303030; margin-right: auto; margin-left: auto; margin-top: -2px; margin-bottom: 10px;">Scrapbook</h1>
-            <hr style="margin-top: -4px; margin-bottom: 12px;"/>
+        <div class="flex flex-col w-[80%] h-[80%] py-[30px]">
+            <h1 class="text-3xl font-semibold text-[#303030] mx-auto mb-[20px] underline">
+                Scrapbook
+            </h1>
 
-            <div class="login-form-item">
-                <h3>Username</h3>
-                <input class="login-form-inputs" value="{{ .Username }}" type="username" name="username" placeholder="joeshmoe" autocomplete="username" />
+            <div class="text-[#505050] w-full mb-[10px]">
+                <h3 class="ml-[5px] mb-[3px]">Username</h3>
+                <input class="disable-on-submit w-full p-[8px] text-[#303030] rounded-md shadow-sm" value="{{ .Username }}" type="username" name="username" placeholder="joeshmoe" autocomplete="username" />
             </div>
 
-            <div class="login-form-item">
-                <h3>Password</h3>
-                <input class="login-form-inputs" value="{{ .Password }}" type="password" name="password" placeholder="password123" autocomplete="current-password" />
+            <div class="text-[#505050] h-[20%] mb-[10px]">
+                <h3 class="ml-[5px] mb-[3px]">Password</h3>
+                <input class="disable-on-submit w-full p-[8px] text-[#303030] rounded-md shadow-md" value="{{ .Password }}" type="password" name="password" placeholder="password123" autocomplete="current-password" />
             </div>
 
             {{ if not .IsLogin }}
-            <div class="login-form-item">
-                <h3>Invite Code</h3>
-                <input value="{{ .InviteCode }}" type="text" name="invite" placeholder="C7O6D1E..."/>
+            <div class="text-[#505050] h-[20%] mb-[10px]">
+                <h3 class="ml-[5px] mb-[3px]">Invite Code</h3>
+                <input class="disable-on-submit w-full p-[8px] text-[#303030] rounded-md shadow-md" value="{{ .InviteCode }}" type="text" name="invite" placeholder="C7O6D1E..."/>
             </div>
             {{ end }}
 
-            <button class="login-form-submit" type="submit">
+            <button
+                class="disable-on-submit bg-[#303030] my-[15px] py-[8px] rounded-md bg-opacity-20 hover:bg-opacity-30 disabled:bg-opacity-10 disabled:hover:bg-opacity-10 disabled:hover:cursor-not-allowed"
+                type="submit"
+            >
                 {{ if .IsLogin }}
                 Login
                 {{ else }}
@@ -74,19 +78,25 @@ document.title = {{ if .IsLogin }} "Login" {{ else }} "Signup" {{ end }}
                 {{ end }}
             </button>
 
-            <a 
+            <button 
+                class="
+                    disable-on-submit
+                    text-link
+                    underline
+                    active:text-link-active
+                    disabled:opacity-70
+                    disabled:hover:cursor-not-allowed
+                    text-sm
+                    mx-auto
+                    mt-[15px]
+                "
                 hx-swap="innerHTML"
                 hx-target="#body"
                 hx-put="{{ if .IsLogin }}signup{{ else }}login{{ end }}"
                 hx-replace-url="true"
-                href=""
-                style="font-size: 14px; margin-right: auto; margin-left: auto; margin-top: 10px; margin-bottom: -10px">
-                {{ if .IsLogin }}
-                Don't
-                {{ else }}
-                Already
-                {{ end }}
-                have an account?
+                href
+            >
+                {{ if .IsLogin }}Don't{{ else }}Already{{ end }} have an account?
             </a>
         </div>
     </form>

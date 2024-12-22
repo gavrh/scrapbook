@@ -5,7 +5,8 @@
         <title>index</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width", initial-scale=1>
-        <link href="static/css/default.css" rel="stylesheet">
+        <link href="static/css/dist.css" rel="stylesheet">
+        <link href="static/css/2fa.css" rel="stylesheet">
         <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", (event) => {
@@ -16,9 +17,8 @@
             })
         </script>
     </head>
-    <body>
-        <link href="static/css/2fa.css" rel="stylesheet">
-        <div class="twofactor-form-container">
+    <body id="#body">
+        <div class="w-full h-screen flex items-center justify-center">
             <form class="twofactor-form">
                 <div class="twofactor-form-items">
                     {{ if not .AccountSetupComplete }}
@@ -36,31 +36,33 @@
                     <hr style="margin-top: -4px; margin-bottom: 12px;"/>
                     <div class="twofactor-form-item">
                         <h3>Auth Code</h3>
-                        <input class="twofactor-form-inputs" name="code" placeholder="000000" />
+                        <input class="twofactor-form-inputs" type="number" name="code" placeholder="000000" />
                     </div>
 
-                    <button class="twofactor-form-submit" type="submit">
+                    <button
+                        hx-post="2fa"
+                        hx-vals='{
+                        "account_id": "{{ .AccountId }}",
+                        "user_login": "{{ .Login }}",
+                        "account_2fa_secret": "{{ .TwoFactorSecret }}",
+                        "account_setup_complete": "{{ .AccountSetupComplete }}"
+                        }'
+                        hx-swap="innerHTML"
+                        hx-target="#body"
+                        class="twofactor-form-submit"
+                        type="submit"
+                    >
                         Verify
                     </button>
+                    <p style="margin-top: 20px; margin-right: auto; margin-left: auto;">
+                        Signed in as @{{ .Login }}
+                    </p>
+                    <a style="padding-top: 5px; margin-left: auto; margin-right: auto;" href="">
+                        Logout
+                    </a>
                 </div>
             </form>
         </div>
-
-        <h1>
-            {{ .AccountId }}
-        </h1>
-        <h1>
-            {{ .Login }}
-        </h1>
-        <h1>
-            {{ .TwoFactorSecret }}
-        </h1>
-        <h1>
-            {{ .AccountSetupComplete }}
-        </h1>
-        {{ if not .AccountSetupComplete }}
-        {{ template "2fa-qr" . }}
-        {{ end }}
     </body>
 </html>
 {{ end }}

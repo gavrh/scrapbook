@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #fafafa;
+}
+
+:link { color: #00008A; text-decoration: underline; }
+:visited { color: #00008A; text-decoration: underline; }
+:link:active, :visited:active { color: #FF0000; }
