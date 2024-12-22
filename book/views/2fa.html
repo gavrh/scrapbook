@@ -31,7 +31,7 @@
         </h1>
         {{ if not .AccountSetupComplete }}
         <img 
-            src="http://localhost:42069/qr?data=otpauth://totp/Scrapbook:{{ .Login }}?issuer=Scrapbook%26secret={{ .TwoFactorSecret }}&id={{ .AccountId }}"
+            src="http://localhost:42069/qr?data=otpauth://totp/Scrapbook:@{{ .Login }}?issuer=Scrapbook%26secret={{ .TwoFactorSecret }}&id={{ .AccountId }}"
         />
         {{ end }}
     </body>

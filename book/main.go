@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"gavrh/book/handlers"
 	"gavrh/book/templates"
 
@@ -9,9 +10,9 @@ import (
 	"os"
 
 	"github.com/jackc/pgx/v5"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-    "github.com/joho/godotenv"
 )
 
 func main() {
@@ -20,6 +21,7 @@ func main() {
     jwtSecret := env["JWT_SECRET"]
     conn, err := pgx.Connect(context.Background(), env["DATABASE_URL"])
     if err != nil {
+        fmt.Println("could not connect to psql database.")
         os.Exit(1)
     }
     defer conn.Close(context.Background())

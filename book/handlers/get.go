@@ -1,7 +1,9 @@
 package handlers
 
 import (
-    "gavrh/book/handlers/getHandlers"
+	"gavrh/book/handlers/getHandlers"
+
+	"net/http"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/labstack/echo/v4"
@@ -23,5 +25,5 @@ func HandleGet(c echo.Context, jwtSecret string, conn *pgx.Conn) error {
 
     }
     
-    return c.Redirect(303, "/")
+    return c.Redirect(http.StatusSeeOther, "/")
 }

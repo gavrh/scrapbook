@@ -78,7 +78,7 @@ document.title = {{ if .IsLogin }} "Login" {{ else }} "Signup" {{ end }}
                 hx-swap="innerHTML"
                 hx-target="#body"
                 hx-put="{{ if .IsLogin }}signup{{ else }}login{{ end }}"
-                hx-push-url="true"
+                hx-replace-url="true"
                 href=""
                 style="font-size: 14px; margin-right: auto; margin-left: auto; margin-top: 10px; margin-bottom: -10px">
                 {{ if .IsLogin }}

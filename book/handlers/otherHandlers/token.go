@@ -24,13 +24,10 @@ func CreateToken(accountId string, remoteIp string, twoFactor bool, jwtSecret st
     return token.SignedString([]byte(jwtSecret))
 } 
 
-func ValidateToken(tokenCookie *http.Cookie, tokenError error, remoteIp string, jwtSecret string) (string, bool,  bool) {
+func ValidateToken(tokenCookie *http.Cookie, remoteIp string, jwtSecret string) (string, bool,  bool) {
     tokenString := tokenCookie.Value
     var nilString string
     var nilBool bool
-    if tokenError != nil || len(tokenString) == 0 || tokenString == "deleted" {
-        return nilString, nilBool, false
-    }
 
     token, err := jwt.Parse(tokenString, func (token *jwt.Token) (interface{}, error) {
         

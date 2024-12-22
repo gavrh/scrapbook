@@ -42,7 +42,7 @@ func HandlePost(c echo.Context, jwtSecret string, conn *pgx.Conn) error {
         
         token, err := otherHandlers.CreateToken(account_id, c.Request().RemoteAddr, false, jwtSecret)
 
-        c.Response().Header().Add("Hx-Push-Url", "/2fa")
+        c.Response().Header().Add("Hx-Replace-Url", "/2fa")
         c.Response().Header().Add("Set-Cookie", "token="+token+"; domain=localhost;")
 
         data := templates.NewTwoFactorTemplate(account_id, user_login, account_2fa_secret, account_setup_complete)

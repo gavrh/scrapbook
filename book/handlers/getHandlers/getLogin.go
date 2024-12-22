@@ -15,8 +15,12 @@ import (
 func HandleGetLogin(c echo.Context, jwtSecret string, conn *pgx.Conn) error {
     tokenCookie, tokenError := c.Cookie("token")
     if tokenError == nil {
-        account_id, twoFactorComplete, ok := otherHandlers.ValidateToken(tokenCookie, tokenError, c.Request().RemoteAddr, jwtSecret)
+        account_id, twoFactorComplete, ok := otherHandlers.ValidateToken(tokenCookie, c.Request().RemoteAddr, jwtSecret)
         if ok {
+            if !twoFactorComplete {
+                return c.Redirect(http.StatusSeeOther, "/2fa")
+            }
+
             var account_2fa_secret string
             var account_setup_complete bool
             var user_login string
@@ -29,10 +33,6 @@ func HandleGetLogin(c echo.Context, jwtSecret string, conn *pgx.Conn) error {
                 fmt.Println(err)
             }
 
-            if !twoFactorComplete {
-                data := templates.NewTwoFactorTemplate(account_id, user_login, account_2fa_secret, account_setup_complete)
-                return c.Render(http.StatusOK, templates.TwoFactor, data)
-            }
 
             return c.Render(http.StatusOK, templates.Index, otherHandlers.IndexData { Id: account_id })
         }

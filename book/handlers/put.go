@@ -7,5 +7,11 @@ import (
 
 func HandlePut(c echo.Context, conn *pgx.Conn) error {
 
+    path := c.Param("path")
+
+    switch path {
+
+    }
+
     return nil
 }
