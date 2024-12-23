@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width", initial-scale=1>
         <link href="static/css/dist.css" rel="stylesheet">
         <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
+        <script src="https://kit.fontawesome.com/aceb22f7f3.js" crossorigin="anonymous"></script>
         <script>
             document.addEventListener("DOMContentLoaded", (event) => {
                 window.history.replaceState({}, "", "/")
@@ -24,12 +25,10 @@
             <!-- right side -->
             <div class="flex flex-col w-full h-full">
                 <!-- header -->
-                <div  class="sticky w-full h-[200px]">
-                    {{ template "header" . }}
-                </div>
+                {{ template "header" . }}
                 <!-- main display -->
                 <div class="w-full h-full">
-                    <div class="w-full h-full bg-blue-500 rounded-tl-3xl overflow-y-scroll">
+                    <div class="w-full h-full bg-white rounded-tl-3xl overflow-y-scroll">
                         {{ template "main" . }}
                     </div>
                 </div>

@@ -1,5 +1,38 @@
 {{ block "sidebar" . }}
-<h1>
-    sidebar
-</h1>
+<div class="sticky w-[250px] h-full">
+    <!-- sidebar container -->
+    <div class="flex flex-col w-full h-full px-[20px]">
+        <!-- sidebar title -->
+        <h1 class="flex w-full h-[75px] items-center text-zinc-600 text-3xl font-bold" >
+            <button>
+                Scrapbook
+            </button>
+        </h1>
+        <!-- sidebar buttons -->
+        <div class="flex flex-col items-start bg-red-500">
+            <button class='{{ template "sidebar-button-css" . }}'>
+                Home
+            </button>
+            <button class='{{ template "sidebar-button-css" . }}'>
+                My Book
+            </button>
+            <button class='{{ template "sidebar-button-css" . }}'>
+                Starred
+            </button>
+            <button class='{{ template "sidebar-button-css" . }}'>
+                Private
+            </button>
+            <button class='{{ template "sidebar-button-css" . }}'>
+                Trash
+            </button>
+            <button class='{{ template "sidebar-button-css" . }}'>
+                Storage
+            </button>
+        </div>
+    </div>
+</div>
+{{ end }}
+
+{{ block "sidebar-button-css" . }}
+flex items-start w-full h-full bg-blue-500 px-[10px] py-[5px] rounded-full
 {{ end }}

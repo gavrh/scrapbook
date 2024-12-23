@@ -1,9 +1,16 @@
 {{ block "header" . }}
-<!-- header container -->
-<div class="flex w-full h-[300px] justify-between">
-    <!-- header left -->
-    <h1>header left</h1>
-    <!-- header right -->
-    <h1>header right</h1>
+<div  class="sticky w-full h-[75px]">
+    <!-- header container -->
+    <div class="flex w-full h-full items-center justify-between child:px-[20px]">
+        <!-- header left -->
+        <div>
+            <h1>left</h1>
+        </div>
+        <!-- header right -->
+        <div>
+            <h1>right</h1>
+            <icon class="fas fa-user"></icon>
+        </div>
+    </div>
 </div>
 {{ end }}

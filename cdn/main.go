@@ -30,7 +30,7 @@ func main() {
     key := []byte(env["ENCRYPTION_KEY"])
     site := env["SITE_URL"]
 
-    // encryption.EncryptFile("storage/users/prime.mkv", "storage/encrypted/prime", key)
+    // encryption.EncryptFile("storage/users/test.mkv", "storage/encrypted/test", key)
 
     e := echo.New()
     e.Use(middleware.Logger())

@@ -7,7 +7,6 @@
         <link href="static/css/dist.css" rel="stylesheet">
         <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
         <script src="https://unpkg.com/htmx-ext-disable-element@2.0.0/disable-element.js"></script>
-        <script src="https://cdn.tailwindcss.com"></script>
         <script>
             document.addEventListener("DOMContentLoaded", (event) => {
 
@@ -26,9 +25,6 @@
         </script>
     </head>
     <body id="body">
-        <h1 class="bg-red-500 text-xl text-yellow-500">
-            hello, world
-        </h1>
         {{ template "login-form" . }}
     </body>
 </html>
@@ -38,6 +34,9 @@
 <script>
 document.title = {{ if .IsLogin }} "Login" {{ else }} "Signup" {{ end }};
 </script>
+        <h1 class="bg-red-500 text-xl text-yellow-500">
+            hello, world
+        </h1>
 <div class="w-full h-screen flex items-center justify-center">
     <form
         class="flex items-center justify-center w-[300px] bg-[#e3e3e3] py-[10px] rounded-[10px] shadow-xl"
