@@ -1,10 +1,11 @@
 # go
 tmp
 go.sum
-main
-book
+cdn/main
+book/book
 
 # npm
+package-lock.json
 node_modules
 
 # css
