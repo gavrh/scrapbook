@@ -3,6 +3,7 @@ package templates
 import (
 	"html/template"
 	"io"
+
 	"github.com/labstack/echo/v4"
 )
 

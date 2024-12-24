@@ -16,81 +16,79 @@
                 h-[50px]
                 px-[10px]
                 py-[3px]
-                mb-[20px]
+                mb-[15px]
                 rounded-full
                 text-gray-600
                 font-semibold
                 bg-white
                 shadow-md
 
-                hover:bg-sky-200
+                hover:bg-sky-100
                 hover:bg-opacity-30
                 hover:shadow-lg
-
-                child:mx-[10px]
             ">
-                <div class="flex items-center justify-center w-[10px]">
+                <div class='{{ template "sidebar-button-icon-css" . }}'>
                     <icon class="fas fa-plus"></icon>
                 </div>
-                <h1>
+                <h1 class='{{ template "sidebar-button-text-css" . }}'>
                     Upload
                 </h1>
             </button>
             <button id="sidebar-home" onclick="toggleButton(this)" class='{{ template "sidebar-button-css" . }}'>
-                <div class="flex items-center justify-center w-[10px]">
+                <div class='{{ template "sidebar-button-icon-css" . }}'>
                     <icon class="fas fa-house"></icon>
                 </div>
-                <h1>
+                <h1 class='{{ template "sidebar-button-text-css" . }}'>
                     Home
                 </h1>
             </button>
             <button id="sidebar-my-book" onclick="toggleButton(this)" class='{{ template "sidebar-button-css" . }}'>
-                <div class="flex items-center justify-center w-[10px]">
+                <div class='{{ template "sidebar-button-icon-css" . }}'>
                     <icon class="fas fa-book"></icon>
                 </div>
-                <h1>
+                <h1 class='{{ template "sidebar-button-text-css" . }}'>
                     My Book
                 </h1>
             </button>
             <div class="w-[1px] h-[15px]"></div>
             <button id="sidebar-favorites" onclick="toggleButton(this)" class='{{ template "sidebar-button-css" . }}'>
-                <div class="flex items-center justify-center w-[10px]">
+                <div class='{{ template "sidebar-button-icon-css" . }}'>
                     <icon class="fas fa-heart"></icon>
                 </div>
-                <h1>
+                <h1 class='{{ template "sidebar-button-text-css" . }}'>
                     Favorites
                 </h1>
             </button>
             <button id="sidebar-shared-with-me" onclick="toggleButton(this)" class='{{ template "sidebar-button-css" . }}'>
-                <div class="flex items-center justify-center w-[10px]">
+                <div class='{{ template "sidebar-button-icon-css" . }}'>
                     <icon class="fas fa-user-group"></icon>
                 </div>
-                <h1>
+                <h1 class='{{ template "sidebar-button-text-css" . }}'>
                     Shared with me
                 </h1>
             </button>
             <div class="flex-1"></div>
             <button id="sidebar-trash" onclick="toggleButton(this)" class='{{ template "sidebar-button-css" . }}'>
-                <div class="flex items-center justify-center w-[10px]">
+                <div class='{{ template "sidebar-button-icon-css" . }}'>
                     <icon class="fas fa-trash"></icon>
                 </div>
-                <h1>
+                <h1 class='{{ template "sidebar-button-text-css" . }}'>
                     Trash
                 </h1>
             </button>
             <button id="sidebar-users" onclick="toggleButton(this)" class='{{ template "sidebar-button-css" . }}'>
-                <div class="flex items-center justify-center w-[10px]">
+                <div class='{{ template "sidebar-button-icon-css" . }}'>
                     <icon class="fas fa-users"></icon>
                 </div>
-                <h1>
+                <h1 class='{{ template "sidebar-button-text-css" . }}'>
                     Users
                 </h1>
             </button>
             <button id="sidebar-storage" onclick="toggleButton(this)" class='{{ template "sidebar-button-css" . }}'>
-                <div class="flex items-center justify-center w-[10px]">
+                <div class='{{ template "sidebar-button-icon-css" . }}'>
                     <icon class="fas fa-cloud"></icon>
                 </div>
-                <h1>
+                <h1 class='{{ template "sidebar-button-text-css" . }}'>
                     Storage
                 </h1>
             </button>
@@ -158,5 +156,17 @@ bg-transparent
 bg-opacity-30
 hover:bg-gray-400
 hover:bg-opacity-30
-child:mx-[10px]
+{{ end }}
+
+{{ block "sidebar-button-icon-css" . }}
+flex
+items-center
+justify-center
+mx-[10px]
+w-[5px]
+{{ end }}
+
+{{ block "sidebar-button-text-css" . }}
+ml-[5px]
+mr-[10px]
 {{ end }}
