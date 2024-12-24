@@ -1,18 +1,19 @@
 package handlers
 
 import (
-    "gavrh/book/templates"
+	"gavrh/book/templates"
+	"gavrh/book/handlers/getHandlers"
 
-    "net/http"
+	"net/http"
 
-    "github.com/labstack/echo/v4"
-    "github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/labstack/echo/v4"
 )
 
 func HandleRequests(e *echo.Echo, jwtSecret string, pool *pgxpool.Pool) {
 
     // get
-    e.GET("/", func (c echo.Context) error { return HandleGet(c, jwtSecret, pool) })
+    e.GET("/", func (c echo.Context) error { return getHandlers.HandleGetDefault(c, jwtSecret, pool) })
     e.GET("/:path", func (c echo.Context) error { return HandleGet(c, jwtSecret, pool) })
 
     // post

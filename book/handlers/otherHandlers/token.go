@@ -8,10 +8,6 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-type IndexData struct {
-    Id string
-}
-
 func CreateToken(accountId string, ipAddr string, twoFactor bool, jwtSecret string) (string , error) {
 
     token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims {

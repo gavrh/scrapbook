@@ -1,16 +1,33 @@
 {{ block "header" . }}
-<div  class="sticky w-full h-[75px]">
+<div  class="sticky w-full h-[65px]">
     <!-- header container -->
-    <div class="flex w-full h-full items-center justify-between child:px-[20px]">
-        <!-- header left -->
-        <div>
-            <h1>left</h1>
-        </div>
-        <!-- header right -->
-        <div>
-            <h1>right</h1>
-            <icon class="fas fa-user"></icon>
-        </div>
+    <div class="flex w-full h-full items-center justify-end">
+        <!-- help -->
+        <button class='{{ template "header-button-css" }} mr-[10px]'>
+            <icon class="fas fa-circle-question"></icon>
+        </button>
+        <!-- settings -->
+        <button class='{{ template "header-button-css" }} mr-[10px]'>
+            <icon class="fas fa-gear"></icon>
+        </button>
+        <!-- user info -->
+        <button class='{{ template "header-button-css" }} mr-[25px]'>
+            <img class="w-[32px] h-[32px] object-fit rounded-full" src="http://localhost:42069/users/picture.png"/>
+        </button>
     </div>
 </div>
+{{ end }}
+
+{{ block "header-button-css" . }}
+flex
+items-center
+justify-center
+w-[40px]
+h-[40px]
+text-xl
+text-gray-600
+rounded-full
+
+hover:bg-gray-400
+hover:bg-opacity-30
 {{ end }}

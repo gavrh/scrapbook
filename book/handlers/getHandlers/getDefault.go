@@ -40,5 +40,6 @@ func HandleGetDefault(c echo.Context, jwtSecret string, pool *pgxpool.Pool) erro
         fmt.Println(err)
     }
 
-    return c.Render(http.StatusOK, templates.Index, otherHandlers.IndexData{ Id: account_id })
+    main := templates.NewMainTemplate("HOME")
+    return c.Render(http.StatusOK, templates.Index, templates.NewIndexTemplate(account_id, user_login, main))
 }

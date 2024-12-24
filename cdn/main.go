@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gavrh/cdn/encryption"
+	"strings"
 
 	"encoding/json"
 	"math/rand"
@@ -43,7 +44,14 @@ func main() {
     e.GET("/:path/:file", func(c echo.Context) error {
 
         // path := c.Param("path")
-        file := c.Param("file")
+        fileParam := c.Param("file")
+        fileParts := strings.Split(fileParam, ".")
+        file := fileParts[0]
+        var ext string
+        if len(fileParts) > 1 {
+            ext = "." + fileParts[1]
+        }
+
 
         f, err := os.Open("storage/encrypted/" + file)
         if err != nil {
@@ -53,10 +61,10 @@ func main() {
 
         randNumber := rand.Intn(1000) + 1
         os.Mkdir("storage/.temp" + strconv.Itoa(randNumber), 0755)
-        encryption.DecryptFile("storage/encrypted/" + file, "storage/.temp" + strconv.Itoa(randNumber) + "/" + file + ".mkv", key)
+        encryption.DecryptFile("storage/encrypted/" + file, "storage/.temp" + strconv.Itoa(randNumber) + "/" + file + ext, key)
         defer os.RemoveAll("storage/.temp" + strconv.Itoa(randNumber))
 
-        return c.File("storage/.temp" + strconv.Itoa(randNumber) + "/" + file + ".mkv")
+        return c.File("storage/.temp" + strconv.Itoa(randNumber) + "/" + file + ext)
     })
 
     e.GET("/qr", func (c echo.Context) error {

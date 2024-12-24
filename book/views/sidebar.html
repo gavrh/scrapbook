@@ -3,36 +3,160 @@
     <!-- sidebar container -->
     <div class="flex flex-col w-full h-full px-[20px]">
         <!-- sidebar title -->
-        <h1 class="flex w-full h-[75px] items-center text-zinc-600 text-3xl font-bold" >
+        <h1 class="flex w-full h-[65px] ml-[15px] items-center text-zinc-700 text-3xl font-extrabold" >
             <button>
                 Scrapbook
             </button>
         </h1>
         <!-- sidebar buttons -->
-        <div class="flex flex-col items-start bg-red-500">
-            <button class='{{ template "sidebar-button-css" . }}'>
-                Home
+        <div class="flex flex-col h-full items-start">
+            <button class="
+                flex
+                items-center
+                h-[50px]
+                px-[10px]
+                py-[3px]
+                mb-[20px]
+                rounded-full
+                text-gray-600
+                font-semibold
+                bg-white
+                shadow-md
+
+                hover:bg-sky-200
+                hover:bg-opacity-30
+                hover:shadow-lg
+
+                child:mx-[10px]
+            ">
+                <div class="flex items-center justify-center w-[10px]">
+                    <icon class="fas fa-plus"></icon>
+                </div>
+                <h1>
+                    Upload
+                </h1>
             </button>
-            <button class='{{ template "sidebar-button-css" . }}'>
-                My Book
+            <button id="sidebar-home" onclick="toggleButton(this)" class='{{ template "sidebar-button-css" . }}'>
+                <div class="flex items-center justify-center w-[10px]">
+                    <icon class="fas fa-house"></icon>
+                </div>
+                <h1>
+                    Home
+                </h1>
             </button>
-            <button class='{{ template "sidebar-button-css" . }}'>
-                Starred
+            <button id="sidebar-my-book" onclick="toggleButton(this)" class='{{ template "sidebar-button-css" . }}'>
+                <div class="flex items-center justify-center w-[10px]">
+                    <icon class="fas fa-book"></icon>
+                </div>
+                <h1>
+                    My Book
+                </h1>
             </button>
-            <button class='{{ template "sidebar-button-css" . }}'>
-                Private
+            <div class="w-[1px] h-[15px]"></div>
+            <button id="sidebar-favorites" onclick="toggleButton(this)" class='{{ template "sidebar-button-css" . }}'>
+                <div class="flex items-center justify-center w-[10px]">
+                    <icon class="fas fa-heart"></icon>
+                </div>
+                <h1>
+                    Favorites
+                </h1>
             </button>
-            <button class='{{ template "sidebar-button-css" . }}'>
-                Trash
+            <button id="sidebar-shared-with-me" onclick="toggleButton(this)" class='{{ template "sidebar-button-css" . }}'>
+                <div class="flex items-center justify-center w-[10px]">
+                    <icon class="fas fa-user-group"></icon>
+                </div>
+                <h1>
+                    Shared with me
+                </h1>
             </button>
-            <button class='{{ template "sidebar-button-css" . }}'>
-                Storage
+            <div class="flex-1"></div>
+            <button id="sidebar-trash" onclick="toggleButton(this)" class='{{ template "sidebar-button-css" . }}'>
+                <div class="flex items-center justify-center w-[10px]">
+                    <icon class="fas fa-trash"></icon>
+                </div>
+                <h1>
+                    Trash
+                </h1>
             </button>
+            <button id="sidebar-users" onclick="toggleButton(this)" class='{{ template "sidebar-button-css" . }}'>
+                <div class="flex items-center justify-center w-[10px]">
+                    <icon class="fas fa-users"></icon>
+                </div>
+                <h1>
+                    Users
+                </h1>
+            </button>
+            <button id="sidebar-storage" onclick="toggleButton(this)" class='{{ template "sidebar-button-css" . }}'>
+                <div class="flex items-center justify-center w-[10px]">
+                    <icon class="fas fa-cloud"></icon>
+                </div>
+                <h1>
+                    Storage
+                </h1>
+            </button>
+            <div class="w-full px-[10px] mt-[15px] mb-[30px]">
+                <div class="w-full h-[5px] bg-gray-300 rounded-full"></div>
+                <div class="w-[19%] h-[5px] mt-[-5px] bg-sky-500 rounded-full"></div>
+                <h1 class="mt-[5px] text-gray-500">391 GB of 1.7 TB used</h1>
+            </div>
         </div>
     </div>
 </div>
+<script>
+    let path = window.location.pathname;
+    console.log(path)
+    path = path.split("/")[1]
+    
+    let element = document.getElementById("sidebar-" + path);
+    if (element === null) element = document.getElementById("sidebar-home")
+    element.classList.toggle('sidebar-selected')
+    element.classList.toggle('text-gray-600');
+    element.classList.toggle('bg-transparent');
+    element.classList.toggle('hover:bg-gray-400');
+    element.classList.toggle('text-sky-600');
+    element.classList.toggle('bg-sky-400');
+    element.classList.toggle('hover:bg-sky-400');
+
+    function toggleButton(e) {
+        console.log(e);
+        if (e.classList.contains("sidebar-selected")) return;
+        const selected = document.getElementsByClassName("sidebar-selected")[0];
+
+        e.classList.toggle("sidebar-selected")
+        selected.classList.toggle("sidebar-selected")
+
+        
+        e.classList.toggle('text-gray-600');
+        e.classList.toggle('bg-transparent');
+        e.classList.toggle('hover:bg-gray-400');
+        e.classList.toggle('text-sky-600');
+        e.classList.toggle('bg-sky-400');
+        e.classList.toggle('hover:bg-sky-400');
+
+        selected.classList.toggle('text-gray-600');
+        selected.classList.toggle('bg-transparent');
+        selected.classList.toggle('hover:bg-gray-400');
+        selected.classList.toggle('text-sky-600');
+        selected.classList.toggle('bg-sky-400');
+        selected.classList.toggle('hover:bg-sky-400');
+
+    }
+</script>
 {{ end }}
 
 {{ block "sidebar-button-css" . }}
-flex items-start w-full h-full bg-blue-500 px-[10px] py-[5px] rounded-full
+flex
+items-center
+w-full
+h-[35px]
+px-[10px]
+py-[3px]
+rounded-full
+text-gray-600
+font-semibold
+bg-transparent
+bg-opacity-30
+hover:bg-gray-400
+hover:bg-opacity-30
+child:mx-[10px]
 {{ end }}

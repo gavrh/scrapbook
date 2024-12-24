@@ -1,7 +1,7 @@
 # go
 tmp
 go.sum
-cdn/main
+cdn/cdn
 book/book
 
 # npm

@@ -7,6 +7,7 @@
         <link href="static/css/dist.css" rel="stylesheet">
         <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
         <script src="https://unpkg.com/htmx-ext-disable-element@2.0.0/disable-element.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
         <script>
             document.addEventListener("DOMContentLoaded", (event) => {
 
@@ -32,14 +33,11 @@
 
 {{ block "login-form" . }}
 <script>
-document.title = {{ if .IsLogin }} "Login" {{ else }} "Signup" {{ end }};
+document.title = {{ if .IsLogin }} "Login" {{ else }} "Signup" {{ end }} + " - Scrapbook"
 </script>
-        <h1 class="bg-red-500 text-xl text-yellow-500">
-            hello, world
-        </h1>
 <div class="w-full h-screen flex items-center justify-center">
     <form
-        class="flex items-center justify-center w-[300px] bg-[#e3e3e3] py-[10px] rounded-[10px] shadow-xl"
+        class="flex items-center justify-center w-[300px] bg-gray-100 border-[1px] border-gray-300 py-[10px] rounded-[10px] shadow-2xl"
         hx-replace-url="true"
         hx-target="#body"
         hx-ext="disable-element"
@@ -51,29 +49,33 @@ document.title = {{ if .IsLogin }} "Login" {{ else }} "Signup" {{ end }};
         {{ end }}
     >
         <div class="flex flex-col w-[80%] h-[80%] py-[30px]">
-            <h1 class="text-3xl font-semibold text-[#303030] mx-auto mb-[20px] underline">
+            <h1 class="text-3xl font-semibold text-gray-800 mx-auto mb-[20px] underline">
                 Scrapbook
             </h1>
 
-            <div class="text-[#505050] w-full mb-[10px]">
+            <div class="text-gray-700 w-full mb-[15px]">
                 <h3 class="ml-[5px] mb-[3px]">Username</h3>
-                <input required id="username-input" class="disable-on-submit w-full p-[8px] text-[#303030] rounded-md shadow-sm" value="{{ .Username }}" type="username" name="username" placeholder="joeshmoe" autocomplete="username" />
+                <input required id="username-input" class="disable-on-submit w-full bg-gray-200 p-[8px] text-gray-800 rounded-md shadow-sm" value="{{ .Username }}" type="username" name="username" placeholder="joeshmoe" autocomplete="username" />
             </div>
 
-            <div class="text-[#505050] h-[20%] mb-[10px]">
+            <div class="text-gray-700 h-[20%] mb-[15px]">
                 <h3 class="ml-[5px] mb-[3px]">Password</h3>
-                <input required class="disable-on-submit w-full p-[8px] text-[#303030] rounded-md shadow-md" value="{{ .Password }}" type="password" name="password" placeholder="password123" autocomplete="current-password" />
+                <input required class="disable-on-submit w-full bg-gray-200 p-[8px] text-gray-800 rounded-md shadow-md" value="{{ .Password }}" type="password" name="password" placeholder="password123" autocomplete="current-password" />
             </div>
 
             {{ if not .IsLogin }}
-            <div class="text-[#505050] h-[20%] mb-[10px]">
+            <div class="text-gray-700 h-[20%] mb-[15px]">
+                <h3 class="ml-[5px] mb-[3px]">Confirm Password</h3>
+                <input required class="disable-on-submit w-full bg-gray-200 p-[8px] text-gray-800 rounded-md shadow-md" value="{{ .Password }}" type="password" name="confirm-password" placeholder="password123" autocomplete="current-password" />
+            </div>
+            <div class="text-gray-700 h-[20%] mb-[15px]">
                 <h3 class="ml-[5px] mb-[3px]">Invite Code</h3>
-                <input required class="disable-on-submit w-full p-[8px] text-[#303030] rounded-md shadow-md" value="{{ .InviteCode }}" type="text" name="invite" placeholder="C7O6D1E..."/>
+                <input required class="disable-on-submit w-full bg-gray-200 p-[8px] text-gray-800 rounded-md shadow-md" value="{{ .InviteCode }}" type="text" name="invite" placeholder="C7O6D1E..."/>
             </div>
             {{ end }}
 
             <button
-                class="disable-on-submit bg-[#303030] my-[15px] py-[8px] rounded-md bg-opacity-20 hover:bg-opacity-30 disabled:bg-opacity-10 disabled:hover:bg-opacity-10 disabled:hover:cursor-not-allowed"
+                class="disable-on-submit bg-gray-600 my-[15px] py-[8px] text-gray-800 rounded-md bg-opacity-20 hover:bg-opacity-30 disabled:bg-opacity-10 disabled:hover:bg-opacity-10 disabled:hover:cursor-not-allowed"
                 type="submit"
             >
                 {{ if .IsLogin }}

@@ -36,5 +36,6 @@ func HandlePostTwoFactor(c echo.Context, jwtSecret string, pool *pgxpool.Pool) e
 
     c.Response().Header().Add("Hx-Replace-Url", "/")
     c.Response().Header().Add("Set-Cookie", "token="+token+"; domain=localhost;")
-    return c.Render(http.StatusOK, templates.Index, otherHandlers.IndexData{ Id: account_id })
+    main := templates.NewMainTemplate("HOME")
+    return c.Render(http.StatusOK, templates.Index, templates.NewIndexTemplate(account_id, "gavin", main))
 }

@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width", initial-scale=1>
         <link href="static/css/dist.css" rel="stylesheet">
         <script src="https://unpkg.com/htmx.org@2.0.3/dist/htmx.js"></script>
-        <script src="https://kit.fontawesome.com/aceb22f7f3.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
         <script>
             document.addEventListener("DOMContentLoaded", (event) => {
                 window.history.replaceState({}, "", "/")
@@ -15,6 +15,7 @@
         </script>
     </head>
     <body id="body">
+        <script src="https://kit.fontawesome.com/aceb22f7f3.js" crossorigin="anonymous"></script>
         <!-- app container -->
         <div
             class="w-full h-screen flex overflow-y-hidden">
@@ -29,7 +30,7 @@
                 <!-- main display -->
                 <div class="w-full h-full">
                     <div class="w-full h-full bg-white rounded-tl-3xl overflow-y-scroll">
-                        {{ template "main" . }}
+                        {{ template "main" .MainDisplay }}
                     </div>
                 </div>
             </div>
